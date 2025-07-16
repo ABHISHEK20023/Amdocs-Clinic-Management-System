@@ -3,58 +3,55 @@ package ClinicManagementSystem;
 import com.acc.utils.ConnectDB;
 
 import java.sql.*;
-        import java.util.Scanner;
+import java.util.Scanner;
 
-public class ClinicManagementSystem {
-
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-           Connection connection= ConnectDB.getDBConnection();
-            Patient patient = new Patient(connection, scanner);
-            Doctor doctor = new Doctor(connection);
-            while(true){
-                System.out.println("Clinic MANAGEMENT SYSTEM ");
-                System.out.println("1. Add Patient");
-                System.out.println("2. View Patients");
-                System.out.println("3. View Doctors");
-                System.out.println("4. Book Appointment");
-                System.out.println("5. Exit");
-                System.out.println("Enter your choice: ");
-                int choice = scanner.nextInt();
-
-                switch(choice){
-                    case 1:
-                        // Add Patient
-                        patient.addPatient();
-                        System.out.println();
-                        break;
-                    case 2:
-                        // View Patient
-                        patient.viewData();
-                        System.out.println();
-                        break;
-                    case 3:
-                        // View Doctors
-                        doctor.viewData();
-                        System.out.println();
-                        break;
-                    case 4:
-                        // Book Appointment
-                        bookAppointment(patient, doctor, connection, scanner);
-                        System.out.println();
-                        break;
-                    case 5:
-                        System.out.println("THANK YOU! FOR USING Clinic MANAGEMENT SYSTEM!!");
-                        return;
-                    default:
-                        System.out.println("Enter valid choice!!!");
-                        break;
-                }
-
-            }
+class ClinicManagementOperations{
+    public static void showMenu(){
+        System.out.println("Clinic MANAGEMENT SYSTEM ");
+        System.out.println("1. Add Patient");
+        System.out.println("2. View Patients");
+        System.out.println("3. View Doctors");
+        System.out.println("4. Book Appointment");
+        System.out.println("5. Exit");
+        System.out.println("Enter your choice: ");
     }
 
+    public static void takeChoice(Patient patient,Doctor doctor,Scanner scanner,Connection connection){
+        while(true){
+            ClinicManagementOperations.showMenu();
+            int choice = scanner.nextInt();
 
+            switch(choice){
+                case 1:
+                    // Add Patient
+                    patient.addPatient();
+                    System.out.println();
+                    break;
+                case 2:
+                    // View Patient
+                    patient.viewData();
+                    System.out.println();
+                    break;
+                case 3:
+                    // View Doctors
+                    doctor.viewData();
+                    System.out.println();
+                    break;
+                case 4:
+                    // Book Appointment
+                    bookAppointment(patient, doctor, connection, scanner);
+                    System.out.println();
+                    break;
+                case 5:
+                    System.out.println("THANK YOU! FOR USING CLINIC MANAGEMENT SYSTEM!!");
+                    return;
+                default:
+                    System.out.println("Enter valid choice!!!");
+                    break;
+            }
+
+        }
+    }
     public static void bookAppointment(Patient patient, Doctor doctor, Connection connection, Scanner scanner){
         System.out.print("Enter Patient Id: ");
         int patientId = scanner.nextInt();
@@ -103,4 +100,18 @@ public class ClinicManagementSystem {
         }
         return false;
     }
+}
+
+public class ClinicManagementSystem {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+           Connection connection= ConnectDB.getDBConnection();
+            Patient patient = new Patient(connection, scanner);
+            Doctor doctor = new Doctor(connection);
+        ClinicManagementOperations.takeChoice(patient,doctor,scanner,connection);
+    }
+
+
+
 }
